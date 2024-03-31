@@ -49,6 +49,9 @@ a:hover{
 .logo:hover{
     cursor: default;
 }
+#desktop-nav{
+    background-color: rgb(255, 255, 255);
+}
 
 #hamburger-nav{
     display: none;
@@ -137,10 +140,10 @@ section{
     gap: 5rem;
     height:80vh;
 }
-.section__pic-container{
+.section_pic-container{
     display:flex;
-    height:400px;
-    width:400px;
+    height:300px;
+    width:300px;
     margin:auto 0;
 }
 
