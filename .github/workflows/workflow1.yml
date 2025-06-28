@@ -2,15 +2,15 @@ name: Deploy s3 Storage
 
 on:
   push:
-    branches: [ "main" ]
-  
+    branches: ["main"]
+
 jobs:
   deploy-s3:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-       
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -21,6 +21,10 @@ jobs:
       - name: Sync files to S3
         run: |
           aws s3 sync ./ s3://${{ secrets.S3_BUCKET_NAME }} --delete
-      
 
-   
+      - name: Invalidate CloudFront cache
+        if: ${{ secrets.CLOUDFRONT_DIST_ID != '' }}
+        env:
+          CLOUDFRONT_DIST_ID: ${{ secrets.CLOUDFRONT_DIST_ID }}
+        run: |
+          aws cloudfront create-invalidation \ --distribution-id $CLOUDFRONT_DIST_ID \ --paths "/*"
